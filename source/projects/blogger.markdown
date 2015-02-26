@@ -1171,7 +1171,7 @@ We want to display any comments underneath their parent article. Open `app/views
 
 ```erb
 <h3>Comments</h3>
-<%= render partial: 'articles/comment', collection: @article.comments %>
+<%= render partial: 'articles/comment', collection: @article.comments.reverse %>
 ```
 
 This renders a partial named `"comment"` and that we want to do it once for each element in the collection `@article.comments`. We saw in the console that when we call the `.comments` method on an article we'll get back an array of its associated comment objects. This render line will pass each element of that array one at a time into the partial named `"comment"`. Now we need to create the file `app/views/articles/_comment.html.erb` and add this code:
@@ -1346,12 +1346,12 @@ Change your `comments/_form.html.erb` so it has labels "Your Name" and "Your Com
 
 #### Add a Timestamp to the Comment Display
 
-We should add something about when the comment was posted. Rails has a really neat helper named `distance_of_time_in_words` which takes two dates and creates a text description of their difference like "32 minutes later", "3 months later", and so on.
+We should add something about when the comment was posted. Rails has a really neat helper named time_ago_in_words, It's like distance_of_time_in_words, but where to_time is fixed to Time.now. When the 'created_at' method is called on the comment, the text description is the time difference between created_at and Time.now.
 
 You can use it in your `_comment.html.erb` partial like this:
 
 ```erb
-<p>Posted <%= distance_of_time_in_words(comment.article.created_at, comment.created_at) %> later</p>
+<p> Posted <%= time_ago_in_words(comment.created_at) %> ago</p>
 ```
 
 With that, you're done with I2!
